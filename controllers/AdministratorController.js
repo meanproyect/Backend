@@ -11,14 +11,77 @@ function saveuser(req, res){
     var params = req.body;
 
     if(params.password && params.name && params.surname && params.user && params.role){
-        user.name = params.name;
-        user.surname = params.surname;
-        
+        user.name = params.name.toUpperCase();;
+        user.surname = params.surname.toUpperCase();;
+        user.user = params.user.toUpperCase();
+        user.password = params.password.toUpperCase();;
+        user.role = params.role.toUpperCase();;
+        user.image = params.image;
+
+        User.findOne({nameUser: user.nameUser}, (err, issetUser)=>{
+            if(err){
+                res.status(200).send({ message: 'Ya esta registrado este usuario'});
+            }else{
+                if(!issetUser){
+                    bcrypt.hash(params.password, null, null, function(err,hash){
+                        user.password = hash;
+                        user.save((err, userStored)=>{
+                            if(err){
+                                res.status(200).send({message: 'Error al guardar el usuario'});
+                            }else{
+                                res.status(200).send({user: userStored});
+                            }
+                        })
+                    })
+                }else{
+                    res.status(200).send({message: 'Ya esta registrado el usuario'});
+                }
+            }
+        })
     }else{
-        res.status(500).send({message: 'Introduce bien los datos'});
+        res.status(500).send({message: 'Debes de ingresar la informacion en todos los campos'});
     }
 }
 
+function updateuser(req,res){
+    var params = req.body;
+    var userId = req.params.id;
+
+    User.findByIdAndUpdate(userId, params,{new: true}, (err,update)=>{
+        if(err){
+            res.status(200).send({message: 'Error al actualizar'});
+        }else{
+            res.status(200).send({user: update});
+        }
+    });
+}
+
+function deleteUser(req,res){
+    var userId = req.params.id
+    User.findOneAndDelete(userId,(err)=>{
+        if(err){
+            res.stauts(200).send({message: 'Error al eliminar el usuario'});
+        }else{
+            res.status(200).send({message: 'Se ha eliminado el usuario'});
+        }
+    });
+}
+
+function listUser(req,res){
+    User.find({}, (err,listar)=>{
+        if(err){
+            res.status(200).send({message: 'Error al listar los usuarios registrados'});
+        }else{
+            res.status(200).send({users: listar});
+        }
+    });
+}
+
+
 module.exports = {
-    saveuser
+    saveuser,
+    updateuser,
+    deleteUser,
+    listUser
+
 }

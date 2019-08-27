@@ -5,12 +5,14 @@ var bodyParser = require('body-parser');
 
 var app = express();
 
-//var administrator_routes = require('./routes/AdministratorRoutes');
+var administrator_routes = require('./routes/AdministratorRoutes');
+var product_routes = require('./routes/productRoutes');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-//app.use('/VentasPlusTI2019', administrator_routes);
+app.use('/VentasPlusTI2019', administrator_routes);
+app.use('/VetasPlustTI2019-Products', product_routes);
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
