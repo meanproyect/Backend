@@ -81,7 +81,7 @@ function listUser(req,res){
         }
     });
 }
-function buscarUser(req,res){
+function buscandoUser(req,res){
     var id = req.params.id;
     User.findById({_id: id},(err,buscandoUser)=>{
         if(err){
