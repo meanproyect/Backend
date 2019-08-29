@@ -11,9 +11,9 @@ function createClient(req, res){
        let nameArray = [] 
        var date = new Date();
         nameArray = params.nameClient.split('');
-        client.nameClient = params.nameClient;
+        client.nameClient = params.nameClient.toUpperCase();
         client.country = params.country;
-        client.clientCode = nameArray[0] +nameArray[1]+ nameArray[2] + nameArray[3] + params.country + date.getFullYear()
+        client.clientCode = nameArray[0] +nameArray[1]+ nameArray[2] + params.country + date.getFullYear()
         client.password = params.password;
         client.role = 'CLIENT';
         client.image = null;
@@ -47,24 +47,28 @@ function createClient(req, res){
 function updateClient(req, res){
     var params = req.body;
     var clientId = req.params.id;
-
-    Client.findByIdAndUpdate(clientId, params, {new: true}, (err, update) =>{
-        if(err){
-            res.status(200).send({message: 'Error al actualizar'});
-        }else{
-            res.status(200).send({client: update});
-        }
-    });
+    params.nameClient = params.nameClient.toUpperCase();
+    bcrypt.hash(params.password, null, null, function(err, hash){{
+        params.password = hash
+        Client.findByIdAndUpdate(clientId, params, {new: true}, (err, update) =>{
+            if(err){
+                res.status(200).send({message: 'Error al actualizar'});
+            }else{
+                res.status(200).send({client: update});
+            }
+        });
+    }})
+    
 }
 
 function deleteClient(req, res){
-    var clientId = req.params.body;
+    var clientId = req.params.id;
 
     Client.findByIdAndDelete(clientId, (err) =>{
         if(err){
-            res.status.status(200).send({message: 'Error al eliminar'});
+            res.status(200).send({message: 'Error al eliminar'});
         }else{
-            res.status.status(200).send({message: 'Se ha eliminado el Cliente'});
+            res.status(200).send({message: 'Se ha eliminado el Cliente'});
         }
     });
 }
@@ -79,10 +83,22 @@ function listClients(req, res){
     });
 }
 
+function buscarClient(req,res){
+    var id = req.params.id;
+    Client.findById({_id: id},(err,buscarClient)=>{
+        if(err){
+            res.status(500).send({message: 'No se encontro'});
+        }else{
+            res.status(200).send({client: buscarClient});
+        }
+    })
+}
+
 module.exports ={
     createClient,
     updateClient,
     deleteClient,
-    listClients
+    listClients,
+    buscarClient
 }
 

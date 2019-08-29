@@ -49,7 +49,9 @@ function saveuser(req, res){
 function updateuser(req,res){
     var params = req.body;
     var userId = req.params.id;
-
+    params.name = params.name.toUpperCase();
+    params.surname = params.surname.toUpperCase();
+    
     User.findByIdAndUpdate(userId, params,{new: true}, (err,update)=>{
         if(err){
             res.status(200).send({message: 'Error al actualizar'});
