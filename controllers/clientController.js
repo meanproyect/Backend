@@ -48,19 +48,24 @@ function updateClient(req, res) {
     var params = req.body;
     var clientId = req.params.id;
     params.nameClient = params.nameClient.toUpperCase();
-    if (params.password != '') {
-        bcrypt.hash(params.password, null, null, function (err, hash) {
-            {
-                params.password = hash
-                Client.findByIdAndUpdate(clientId, params, { new: true }, (err, update) => {
-                    if (err) {
-                        res.status(200).send({ message: 'Error al actualizar' });
-                    } else {
-                        res.status(200).send({ client: update });
-                    }
-                });
-            }
-        });
+    if (clientId != '') {
+        if(params.password ==''){
+            res.status(200).send({message: 'Debes de llenar el campo de contraseña'});
+        }else{
+            bcrypt.hash(params.password, null, null, function (err, hash) {
+                {
+                    params.password = hash
+                    Client.findByIdAndUpdate(clientId, params, { new: true }, (err, update) => {
+                        if (err) {
+                            res.status(200).send({ message: 'Error al actualizar' });
+                        } else {
+                            res.status(200).send({ client: update });
+                        }
+                    });
+                }
+            });
+        }
+        
     } else {
         Client.findByIdAndUpdate(clientId, params, { new: true }, (err, update) => {
             if (err) {
