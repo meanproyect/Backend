@@ -9,8 +9,6 @@ function createClient(req, res){
 
     if(params.nameClient && params.country && params.password){
        let nameArray = [] 
-       var countryArray = [] ;
-       var dateArray  = [];
        var date = new Date();
         nameArray = params.nameClient.split('');
         client.nameClient = params.nameClient;
@@ -20,7 +18,7 @@ function createClient(req, res){
         client.role = 'CLIENT';
         client.image = null;
       
-        Client.findOne({nameClient: client.nameClient}, (err, isSetUser) =>{
+        Client.findOne({nameClient: client.nameClient, country: client.country}, (err, isSetUser) =>{
             if(err){
                 res.status(200).send({message: 'Ya se ha registrado este Client'});
             }else{

@@ -11,16 +11,19 @@ function saveuser(req, res){
     var params = req.body;
 
     if(params.password && params.name && params.surname && params.role){
+        var nameArray = params.name.split('');
+        var date = new Date
+        var finalCode = nameArray[0] + '-' + params.surname +date.getFullYear();
         user.name = params.name.toUpperCase();
         user.surname = params.surname.toUpperCase();
         user.password = params.password.toUpperCase();
         user.role = params.role.toUpperCase();
-        user.code = params.code.toUpperCase();
+        user.code = finalCode.toUpperCase();
         user.image = params.image;
 
         User.findOne({code: user.code}, (err, issetUser)=>{
             if(err){
-                res.status(200).send({ message: 'Ya esta registrado este usuario'});
+                res.status(200).send({ message: 'Ya esta registrado el usuario'});
             }else{
                 if(!issetUser){
                     bcrypt.hash(params.password, null, null, function(err,hash){
