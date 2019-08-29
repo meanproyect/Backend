@@ -1,24 +1,24 @@
 'use strict'
 
-var User = require('../models/UserModel');
+var User = require('../models/AdministratorModel');
 var bcrypt = require('bcrypt-nodejs');
-var jwt = require('../services/jwt');
-var fs = require('fs');
-var path = require('path');
+//var jwt = require('../services/jwt');
+// var fs = require('fs');
+// var path = require('path');
 
 function saveuser(req, res){
     var user = new User();
     var params = req.body;
 
-    if(params.password && params.name && params.surname && params.user && params.role){
-        user.name = params.name.toUpperCase();;
-        user.surname = params.surname.toUpperCase();;
-        user.user = params.user.toUpperCase();
-        user.password = params.password.toUpperCase();;
-        user.role = params.role.toUpperCase();;
+    if(params.password && params.name && params.surname && params.role){
+        user.name = params.name.toUpperCase();
+        user.surname = params.surname.toUpperCase();
+        user.password = params.password.toUpperCase();
+        user.role = params.role.toUpperCase();
+        user.code = params.code.toUpperCase();
         user.image = params.image;
 
-        User.findOne({nameUser: user.nameUser}, (err, issetUser)=>{
+        User.findOne({code: user.code}, (err, issetUser)=>{
             if(err){
                 res.status(200).send({ message: 'Ya esta registrado este usuario'});
             }else{
