@@ -51,14 +51,27 @@ function updateuser(req,res){
     var userId = req.params.id;
     params.name = params.name.toUpperCase();
     params.surname = params.surname.toUpperCase();
+    if(params.password != ''){
+        bcrypt.hash(params.password, null,null,function(err,hash){
+            params.params = hash;
+            User.findByIdAndUpdate(userId, params,{new: true}, (err,update)=>{
+                if(err){
+                    res.status(200).send({message: 'Error al actualizar'});
+                }else{
+                    res.status(200).send({user: update});
+                }
+            });
+        }) 
+    }else{
+        User.findByIdAndUpdate(userId, params,{new: true}, (err,update)=>{
+            if(err){
+                res.status(200).send({message: 'Error al actualizar'});
+            }else{
+                res.status(200).send({user: update});
+            }
+        });
+    }
     
-    User.findByIdAndUpdate(userId, params,{new: true}, (err,update)=>{
-        if(err){
-            res.status(200).send({message: 'Error al actualizar'});
-        }else{
-            res.status(200).send({user: update});
-        }
-    });
 }
 
 function deleteUser(req,res){
