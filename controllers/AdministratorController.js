@@ -81,12 +81,23 @@ function listUser(req,res){
         }
     });
 }
+function buscarUser(req,res){
+    var id = req.params.id;
+    User.findById({_id: id},(err,buscandoUser)=>{
+        if(err){
+            res.status(200).send({message: 'Error al buscar'});
+        }else{
+            res.status(200).send({user: buscandoUser});
+        }
+    })
+}
 
 
 module.exports = {
     saveuser,
     updateuser,
     deleteUser,
-    listUser
+    listUser,
+    buscandoUser
 
 }
