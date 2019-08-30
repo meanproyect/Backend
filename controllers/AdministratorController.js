@@ -42,7 +42,7 @@ function saveuser(req, res) {
             }
         })
     } else {
-        res.status(500).send({ message: 'Debes de ingresar la informacion en todos los campos' });
+        res.status(200).send({ message: 'Debes de ingresar la informacion en todos los campos' });
     }
 }
 
@@ -88,7 +88,7 @@ function updateDatos(req,res){
 
 function deleteUser(req, res) {
     var userId = req.params.id
-    User.findOneAndDelete(userId, (err) => {
+    User.findByIdAndDelete(userId, (err) => {
         if (err) {
             res.stauts(200).send({ message: 'Error al eliminar el usuario' });
         } else {
