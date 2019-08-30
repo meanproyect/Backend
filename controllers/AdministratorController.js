@@ -88,7 +88,7 @@ function updateDatos(req,res){
 
 function deleteUser(req, res) {
     var userId = req.params.id
-    User.findOneAndDelete(userId, (err) => {
+    User.findByIdAndDelete(userId, (err) => {
         if (err) {
             res.stauts(200).send({ message: 'Error al eliminar el usuario' });
         } else {
