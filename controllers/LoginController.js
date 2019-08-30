@@ -13,7 +13,7 @@ function login(req, res){
             if(!user){
                 ClientModel.findOne({code: params.code}, (err,user)=>{
                     if(err){
-                        res.status(400).send({message: 'Error xd'});
+                        res.status(400).send({message: 'Error'});
                     }else{
                         if(!user){
                             res.status(200).send({message: 'No se ha encontrado usuario'});
