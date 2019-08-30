@@ -5,22 +5,20 @@ function saveTicket(req, res) {
     var params = req.body;
     var ticket = new Ticket();
 
-    if (params.title && params.description && params.startDate) {
+    if (params.title && params.description ) {
         ticket.title = params.title.toUpperCase();
         ticket.description = params.description.toUpperCase();
         ticket.status = params.status.toUpperCase();
-        ticket.startDate = params.startDate;
-        ticket.client = params.client;
+        ticket.startDate = Date.now();
+        ticket.client = 'Cliente x';
 
         ticket.save((err, saveTicket) => {
             if (err) {
                 res.status(200).send({ message: 'Error al guardar ticket' });
             } else {
-                if (!saveTicket) {
-                    res.status(200).send({ message: 'No se ha podido guardar' });
-                } else {
+               
                     res.status(200).send({ ticket: saveTicket });
-                }
+                
             }
         })
     } else {
@@ -62,10 +60,21 @@ function listTicket(req,res){
         }
     })
 }
+function buscarTicket(req,res){
+    var ticketId = req.params.id;
+    Ticket.findById({_id: ticketId},(err,buscarTicket)=>{
+        if(err){
+            res.status(500).send({message: 'Error al buscar el ticket'});
+        }else{
+            res.status(200).send({ticket: buscarTicket});
+        }
+    })
+}
 
 module.exports = {
     saveTicket,
     updateTicket,
     deleteTicket,
-    listTicket
+    listTicket,
+    buscarTicket
 }

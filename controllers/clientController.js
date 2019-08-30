@@ -40,7 +40,7 @@ function createClient(req, res) {
             }
         });
     } else {
-        res.status(500).send({ message: 'Debes de ingresar la información en todos los campos' });
+        res.status(200).send({ message: 'Debes de ingresar la información en todos los campos' });
     }
 }
 
