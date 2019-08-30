@@ -48,35 +48,34 @@ function updateClient(req, res) {
     var params = req.body;
     var clientId = req.params.id;
     params.nameClient = params.nameClient.toUpperCase();
-    if (clientId != '') {
-        if(params.password ==''){
-            res.status(200).send({message: 'Debes de llenar el campo de contraseña'});
-        }else{
-            bcrypt.hash(params.password, null, null, function (err, hash) {
-                {
-                    params.password = hash
-                    Client.findByIdAndUpdate(clientId, params, { new: true }, (err, update) => {
-                        if (err) {
-                            res.status(200).send({ message: 'Error al actualizar' });
-                        } else {
-                            res.status(200).send({ client: update });
-                        }
-                    });
-                }
-            });
-        }
-        
+    if (params.password == '') {
+        res.status(200).send({ message: 'Debes de llenar el campo de contraseña' });
     } else {
-        Client.findByIdAndUpdate(clientId, params, { new: true }, (err, update) => {
-            if (err) {
-                res.status(200).send({ message: 'Error al actualizar' });
-            } else {
-                res.status(200).send({ client: update });
+        bcrypt.hash(params.password, null, null, function (err, hash) {
+            {
+                params.password = hash
+                Client.findByIdAndUpdate(clientId, params, { new: true }, (err, update) => {
+                    if (err) {
+                        res.status(200).send({ message: 'Error al actualizar' });
+                    } else {
+                        res.status(200).send({ client: update });
+                    }
+                });
             }
         });
     }
+}
 
-
+function updateDatos(req,res){
+    var clientId = req.params.id;
+    var params = req.body;
+    Client.findByIdAndUpdate(clientId, params, { new: true }, (err, update) => {
+        if (err) {
+            res.status(200).send({ message: 'Error al actualizar' });
+        } else {
+            res.status(200).send({ client: update });
+        }
+    });
 }
 
 function deleteClient(req, res) {
@@ -115,6 +114,7 @@ function buscarClient(req, res) {
 module.exports = {
     createClient,
     updateClient,
+    updateDatos,
     deleteClient,
     listClients,
     buscarClient

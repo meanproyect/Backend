@@ -68,15 +68,22 @@ function updateuser(req, res) {
             })
         }
     } else {
-        User.findByIdAndUpdate(userId, params, { new: true }, (err, update) => {
-            if (err) {
-                res.status(200).send({ message: 'Error al actualizar' });
-            } else {
-                res.status(200).send({ user: update });
-            }
-        });
+      
     }
 
+}
+function updateDatos(req,res){
+    var userId = req.params.id;
+    var params = req.body;
+    params.name = params.name.toUpperCase();
+    params.surname = params.surname.toUpperCase();
+    User.findByIdAndUpdate(userId, params, { new: true }, (err, update) => {
+        if (err) {
+            res.status(200).send({ message: 'Error al actualizar' });
+        } else {
+            res.status(200).send({ user: update });
+        }
+    });
 }
 
 function deleteUser(req, res) {
@@ -114,6 +121,7 @@ function buscandoUser(req, res) {
 module.exports = {
     saveuser,
     updateuser,
+    updateDatos,
     deleteUser,
     listUser,
     buscandoUser
