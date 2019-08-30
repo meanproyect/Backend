@@ -42,7 +42,7 @@ function saveuser(req, res) {
             }
         })
     } else {
-        res.status(500).send({ message: 'Debes de ingresar la informacion en todos los campos' });
+        res.status(200).send({ message: 'Debes de ingresar la informacion en todos los campos' });
     }
 }
 

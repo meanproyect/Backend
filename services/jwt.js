@@ -19,7 +19,7 @@ exports.createTokenClient = function (user) {
         sub: user._id,
         nameClient: user.nameClient,
         country: user.country,
-        clientCode: user.clientCode,
+        code: user.clientCode,
         role: user.role,
     };
     return jwt.encode(playload,secret);

@@ -18,6 +18,7 @@ var administrator_routes = require('./routes/AdministratorRoutes');
 var product_routes = require('./routes/productRoutes');
 var ticket_routes = require('./routes/ticketsRoutes');
 var client_routes = require('./routes/clientRoutes');
+var login_routes = require('./routes/LoginRoute');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -26,6 +27,7 @@ app.use('/AdministratorPlusTI', administrator_routes);
 app.use('/VetasPlustTI2019-Products', product_routes);
 app.use('/TicketPlusTI', ticket_routes);
 app.use('/ClientPlusTI', client_routes);
+app.use('/PlusTI', login_routes);
 
 
 

@@ -13,12 +13,12 @@ function createClient(req, res) {
         nameArray = params.nameClient.split('');
         client.nameClient = params.nameClient.toUpperCase();
         client.country = params.country;
-        client.clientCode = nameArray[0] + nameArray[1] + nameArray[2] + params.country + date.getFullYear()
+        client.code = nameArray[0] + nameArray[1] + nameArray[2] + params.country + date.getFullYear()
         client.password = params.password;
         client.role = 'CLIENT';
         client.image = null;
 
-        Client.findOne({ nameClient: client.nameClient, country: client.country }, (err, isSetUser) => {
+        Client.findOne({ code: client.code, country: client.country }, (err, isSetUser) => {
             if (err) {
                 res.status(200).send({ message: 'Ya se ha registrado este Client' });
             } else {
