@@ -11,9 +11,10 @@ function createClient(req, res) {
         let nameArray = []
         var date = new Date();
         nameArray = params.nameClient.split('');
+        var finalCode = nameArray[0] + nameArray[1] + nameArray[2] + params.country + date.getFullYear();
         client.nameClient = params.nameClient.toUpperCase();
         client.country = params.country;
-        client.code = nameArray[0] + nameArray[1] + nameArray[2] + params.country + date.getFullYear()
+        client.code = finalCode.toUpperCase();
         client.password = params.password;
         client.role = 'CLIENT';
         client.image = null;
