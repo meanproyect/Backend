@@ -22,10 +22,10 @@ exports.createTokenClient = function (user) {
         code: user.clientCode,
         role: user.role,
     };
-    return jwt.encode(playload,secret);
+    return jwt.encode(playload, secret);
 }
 
-exports.createTokenSupport = function(user){
+exports.createTokenSupport = function (user) {
     var playload = {
         sub: user._id,
         nameClient: user.nameClient,
@@ -34,5 +34,15 @@ exports.createTokenSupport = function(user){
         role: user.role,
         client: user.client
     };
+    return jwt.encode(playload, secret);
+}
+exports.createTokenTicket = function (ticket) {
+    var playload = {
+        title: ticket.title,
+        decription: ticket.decription,
+        status: ticket.status,
+        startDate: ticket.startDate,
+        client: ticket.client
+    }
     return jwt.encode(playload,secret);
 }

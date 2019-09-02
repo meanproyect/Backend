@@ -1,6 +1,7 @@
 'use strict';
 var Support = require('../models/AdministratorModel');
 var Ticket = require('../models/ticketsModel');
+var Finish = require('../models/TicketsFinishModel');
 function saveTicket(req, res) {
     var params = req.body;
     var ticket = new Ticket();
@@ -30,13 +31,71 @@ function updateTicket(req, res) {
     var ticketId = req.params.id;
     var params = req.body;
 
-    Ticket.findByIdAndUpdate(ticketId, params, (err, updateTicket) => {
+    Ticket.findByIdAndUpdate(ticketId, params,{new : true} ,(err, updateTicket) => {
         if (err) {
             res.status(200).send({ message: 'Error al actualizar' });
         }else{
-            res,status(200).send({update: updateTicket});
+            res.status(200).send({update: updateTicket});
         }
     });
+}
+
+function updateTicketConfirm(req,res){
+    var ticketId = req.params.id;
+    var params = req.body;
+    params.status = 'CONFIRMADO';
+    Ticket.findByIdAndUpdate(ticketId, params.status,{new: true},(err, updateTicket)=>{
+        if(err){
+            res.status(200).send({ message: 'Error al actualizar' });
+        }else{
+            res.status(200).send({ update: updateTicket });
+        }
+    })
+}
+function updateTicketProcess(req,res){
+    var ticketId = req.params.id;
+    var params = req.body;
+    params.status = 'PROCESO'
+    Ticket.findByIdAndUpdate(ticketId,params.status,{new: true},(err,updateTicket)=>{
+        if(err){
+            res.status(200).send({ message: 'Error al actualizar' });
+        }else{
+            res.status(200).send({ update: updateTicket });
+        }
+    })
+}
+function updateTicketEnd(req,res){
+    var ticketId = req.params.id;
+    var params = req.body;
+    var finish = new Finish();
+    params.status = 'Terminado';
+
+    Ticket.findByIdAndUpdate(ticketId,params.status,{new: true},(err,updateTicket)=>{
+        if(err){
+            res.status(200).send({ message: 'Error al actualizar' });
+        }else{
+            finish.title = updateTicket.title;
+            finish.description = updateTicket.description;
+            finish.status = updateTicket.status;
+            finish.startDate = updateTicket.startDate;
+            finish.finalDate = Date.now();
+            finish.client = updateTicket.client;
+
+            finish.save((err,save)=>{
+                if(err){
+                    res.status(400).send({message: 'NO se pudo guardar'});
+                }else{
+                    Ticket.findByIdAndDelete({_id: updateTicket._id},(err)=>{
+                        if(err){
+                            res.status(400).send({message: 'Error al eliminar'});
+                        }else{
+                            res.status(200).send({message: 'Se ha terminado el ticket'});
+                        }
+                    })
+                }
+            })
+        }
+    })
 }
 
 
@@ -88,5 +147,8 @@ module.exports = {
     deleteTicket,
     listTicket,
     buscarTicket,
-    TicketAsiganado
+    TicketAsiganado,
+    updateTicketConfirm,
+    updateTicketProcess,
+    updateTicketEnd
 }
