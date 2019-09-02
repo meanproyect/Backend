@@ -13,7 +13,7 @@ function saveuser(req, res) {
     if (params.password && params.name && params.surname && params.role) {
         var nameArray = params.name.split('');
         var date = new Date
-        var finalCode = nameArray[0]+nameArray[1] + '-' + params.role+'-'+ params.surname + date.getFullYear();
+        var finalCode = nameArray[0]+nameArray[1] + '-' +'ADMINISTRATOR' +'-'+ params.surname + date.getFullYear();
         user.name = params.name.toUpperCase();
         user.surname = params.surname.toUpperCase();
         user.password = params.password.toUpperCase();

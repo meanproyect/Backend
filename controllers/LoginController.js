@@ -28,7 +28,7 @@ function login(req, res){
                                             if(check){
                                                 res.status(200).send({token: jwt.createTokenSupport(user)});
                                             }else{
-                                                res.status(200).send({message: 'No se ha podiddo loguear'})
+                                                res.status(200).send({message: 'No se ha podido loguear'})
                                             }
                                         })
                                     }
@@ -40,7 +40,7 @@ function login(req, res){
                                     console.log('Client')
                                     res.status(200).send({token: jwt.createTokenClient(user)})
                                 }else{
-                                    res.status(200).send({message: 'No se ha podiddo loguear'});
+                                    res.status(200).send({message: 'No se ha podido loguear'});
                                 }
                             })
                         }

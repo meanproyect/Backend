@@ -14,7 +14,7 @@ function saveSupport(req, res) {
     if (params.password && params.name && params.surname  && params.client) {
         var nameArray = params.name.split('');
         var date = new Date
-        var finalCode = nameArray[0] + nameArray[1] + '-' + params.role + '-' + params.surname + date.getFullYear();
+        var finalCode = nameArray[0] + nameArray[1] + '-' + 'SUPPORT' + '-' + params.surname + date.getFullYear();
         support.name = params.name.toUpperCase();
         support.surname = params.surname.toUpperCase();
         support.password = params.password.toUpperCase();

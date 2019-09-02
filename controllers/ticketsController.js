@@ -8,7 +8,7 @@ function saveTicket(req, res) {
     if (params.title && params.description ) {
         ticket.title = params.title.toUpperCase();
         ticket.description = params.description.toUpperCase();
-        ticket.status = params.status.toUpperCase();
+        ticket.status = 'ESPERA';
         ticket.startDate = Date.now();
         ticket.client = params.client;
 
@@ -38,6 +38,7 @@ function updateTicket(req, res) {
         }
     });
 }
+
 
 function deleteTicket(req,res){
     var ticketId = req.params.id;

@@ -13,7 +13,9 @@ function createClient(req, res) {
         client.country = params.country;
         if(params.nameClient.includes(' ')){
             var name = params.nameClient.replace(' ','');
-            client.code = name + params.country+ '-' + date.getFullYear()
+            client.code = name.toUpperCase() + params.country+ '-' + date.getFullYear()
+        }else{
+            client.code = client.nameClient + params.country+ '-' + date.getFullYear()
         }
         
         client.password = params.password;
