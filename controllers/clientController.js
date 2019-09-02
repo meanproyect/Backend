@@ -8,12 +8,10 @@ function createClient(req, res) {
     var params = req.body;
 
     if (params.nameClient && params.country && params.password) {
-        let nameArray = []
         var date = new Date();
-        nameArray = params.nameClient.split('');
         client.nameClient = params.nameClient.toUpperCase();
         client.country = params.country;
-        client.code = nameArray[0] + nameArray[1] + nameArray[2] + params.country + date.getFullYear()
+        client.code = params.nameClient + params.country+ '-' + date.getFullYear()
         client.password = params.password;
         client.role = 'CLIENT';
         client.image = null;

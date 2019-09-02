@@ -1,38 +1,40 @@
 'use strict'
 
-var User = require('../models/AdministratorModel');
+
 var bcrypt = require('bcrypt-nodejs');
+var Support = require('../models/supportModel');
 //var jwt = require('../services/jwt');
 // var fs = require('fs');
 // var path = require('path');
 
-function saveuser(req, res) {
-    var user = new User();
+function saveSupport(req, res) {
     var params = req.body;
+    var support = new Support();
 
-    if (params.password && params.name && params.surname && params.role) {
+    if (params.password && params.name && params.surname && params.role && params.client) {
         var nameArray = params.name.split('');
         var date = new Date
-        var finalCode = nameArray[0]+nameArray[1] + '-' + params.role+'-'+ params.surname + date.getFullYear();
-        user.name = params.name.toUpperCase();
-        user.surname = params.surname.toUpperCase();
-        user.password = params.password.toUpperCase();
-        user.role = 'ADMINISTRATOR';
-        user.code = finalCode.toUpperCase();
-        user.image = params.image;
+        var finalCode = nameArray[0] + nameArray[1] + '-' + params.role + '-' + params.surname + date.getFullYear();
+        support.name = params.name.toUpperCase();
+        support.surname = params.surname.toUpperCase();
+        support.password = params.password.toUpperCase();
+        support.role = 'SUPPORT';
+        support.code = finalCode.toUpperCase();
+        support.client = params.client;
+        support.image = params.image;
 
-        User.findOne({ code: user.code }, (err, issetUser) => {
+        Support.findOne({ code: support.code }, (err, issetUser) => {
             if (err) {
                 res.status(200).send({ message: 'Ya esta registrado el usuario' });
             } else {
                 if (!issetUser) {
                     bcrypt.hash(params.password, null, null, function (err, hash) {
-                        user.password = hash;
-                        user.save((err, userStored) => {
+                        support.password = hash;
+                        support.save((err, userStored) => {
                             if (err) {
                                 res.status(200).send({ message: 'Error al guardar el usuario' });
                             } else {
-                                res.status(200).send({ user: userStored });
+                                res.status(200).send({ support: userStored });
                             }
                         })
                     })
@@ -44,9 +46,11 @@ function saveuser(req, res) {
     } else {
         res.status(200).send({ message: 'Debes de ingresar la informacion en todos los campos' });
     }
+
+
 }
 
-function updateuser(req, res) {
+function updateSupport(req, res) {
     var params = req.body;
     var userId = req.params.id;
     params.name = params.name.toUpperCase();
@@ -58,37 +62,37 @@ function updateuser(req, res) {
 
             bcrypt.hash(params.password, null, null, function (err, hash) {
                 params.password = hash;
-                User.findByIdAndUpdate(userId, params, { new: true }, (err, update) => {
+                Support.findByIdAndUpdate(userId, params, { new: true }, (err, update) => {
                     if (err) {
                         res.status(200).send({ message: 'Error al actualizar' });
                     } else {
-                        res.status(200).send({ user: update });
+                        res.status(200).send({ support: update });
                     }
                 });
             })
         }
     } else {
-      
+
     }
 
 }
-function updateDatos(req,res){
+function updateDatos(req, res) {
     var userId = req.params.id;
     var params = req.body;
     params.name = params.name.toUpperCase();
     params.surname = params.surname.toUpperCase();
-    User.findByIdAndUpdate(userId, params, { new: true }, (err, update) => {
+    Support.findByIdAndUpdate(userId, params, { new: true }, (err, update) => {
         if (err) {
             res.status(200).send({ message: 'Error al actualizar' });
         } else {
-            res.status(200).send({ user: update });
+            res.status(200).send({ support: update });
         }
     });
 }
 
-function deleteUser(req, res) {
+function deleteSupport(req, res) {
     var userId = req.params.id
-    User.findByIdAndDelete(userId, (err) => {
+    Support.findByIdAndDelete(userId, (err) => {
         if (err) {
             res.stauts(200).send({ message: 'Error al eliminar el usuario' });
         } else {
@@ -97,33 +101,31 @@ function deleteUser(req, res) {
     });
 }
 
-function listUser(req, res) {
-    User.find({}, (err, listar) => {
+function listSupport(req, res) {
+    Support.find({}, (err, listar) => {
         if (err) {
             res.status(200).send({ message: 'Error al listar los usuarios registrados' });
         } else {
-            res.status(200).send({ users: listar });
+            res.status(200).send({ support: listar });
         }
     });
 }
-function buscandoUser(req, res) {
+function buscandoSupport(req, res) {
     var id = req.params.id;
-    User.findById({ _id: id }, (err, buscandoUser) => {
+    Support.findById({ _id: id }, (err, buscandoUser) => {
         if (err) {
             res.status(200).send({ message: 'Error al buscar' });
         } else {
-            res.status(200).send({ user: buscandoUser });
+            res.status(200).send({ support: buscandoUser });
         }
-    })
+    });
 }
 
-
-module.exports = {
-    saveuser,
-    updateuser,
+module.exports ={
+    saveSupport,
+    updateSupport,
     updateDatos,
-    deleteUser,
-    listUser,
-    buscandoUser
-
+    deleteSupport,
+    listSupport,
+    buscandoSupport
 }

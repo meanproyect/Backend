@@ -7,6 +7,7 @@ api.post('/Save-Ticket', ticketController.saveTicket);
 api.put('/Update-Ticket/:id', ticketController.updateTicket);
 api.put('/Delete-ticket/:id', ticketController.deleteTicket);
 api.get('/List-Tickets', ticketController.listTicket);
-api.get('/Buscar-Ticket/:id', ticketController.buscarTicket)
+api.get('/Buscar-Ticket/:id', ticketController.buscarTicket);
+api.get('/Assigned-Ticket/', ticketController.TicketAsiganado);
 
 module.exports = api;

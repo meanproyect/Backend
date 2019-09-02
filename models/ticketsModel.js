@@ -9,7 +9,7 @@ var SchemaTicket = Schema({
     status: String,
     startDate: Date,
     finalDate: Date,
-    client: {type: Schema.ObjectId, ref:'User'}
+    client: {type: Schema.ObjectId, ref:'Client'}
 });
 
 module.exports = mongoose.model('Tickets', SchemaTicket);

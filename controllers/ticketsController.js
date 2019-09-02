@@ -1,5 +1,5 @@
 'use strict';
-
+var Support = require('../models/AdministratorModel');
 var Ticket = require('../models/ticketsModel');
 function saveTicket(req, res) {
     var params = req.body;
@@ -10,7 +10,7 @@ function saveTicket(req, res) {
         ticket.description = params.description.toUpperCase();
         ticket.status = params.status.toUpperCase();
         ticket.startDate = Date.now();
-        ticket.client = 'Cliente x';
+        ticket.client = params.client;
 
         ticket.save((err, saveTicket) => {
             if (err) {
@@ -70,11 +70,22 @@ function buscarTicket(req,res){
         }
     })
 }
+function TicketAsiganado(req,res){
+    var params = req.body
+    Ticket.findById({client: params.client},(err,buscarTicket)=>{
+        if(err){
+            res.status(500).send({message: 'Error al buscar Tickets'});
+        }else{
+            res.status(200).send({ticket: buscarTicket});
+        }
+    })
+}
 
 module.exports = {
     saveTicket,
     updateTicket,
     deleteTicket,
     listTicket,
-    buscarTicket
+    buscarTicket,
+    TicketAsiganado
 }
