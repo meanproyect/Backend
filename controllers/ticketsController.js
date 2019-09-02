@@ -132,9 +132,9 @@ function buscarTicket(req,res){
 }
 function TicketAsiganado(req,res){
     var params = req.body
-    Ticket.findById({client: params.client},(err,buscarTicket)=>{
+    Ticket.find({client: params.client},(err,buscarTicket)=>{
         if(err){
-            res.status(500).send({message: 'Error al buscar Tickets'});
+            res.status(400).send({message: 'Error al buscar Tickets'});
         }else{
             res.status(200).send({ticket: buscarTicket});
         }

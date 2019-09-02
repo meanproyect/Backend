@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 
 var SchemaTicket = Schema({
     title: String,
-    decription: String,
+    description: String,
     status: String,
     startDate: Date,
     finalDate: Date,

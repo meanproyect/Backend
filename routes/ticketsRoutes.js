@@ -10,7 +10,7 @@ api.put('/Update-Process/:id', ticketController.updateTicketProcess);
 api.put('/Update-finish/:id',ticketController.updateTicketEnd);
 api.put('/Delete-ticket/:id', ticketController.deleteTicket);
 api.get('/List-Tickets', ticketController.listTicket);
-api.post('/Buscar-Ticket', ticketController.buscarTicket);
-api.get('/Assigned-Ticket/', ticketController.TicketAsiganado);
+api.get('/Buscar-Ticket/:id', ticketController.buscarTicket);
+api.post('/Assigned-Ticket', ticketController.TicketAsiganado);
 
 module.exports = api;
