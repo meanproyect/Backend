@@ -24,3 +24,15 @@ exports.createTokenClient = function (user) {
     };
     return jwt.encode(playload,secret);
 }
+
+exports.createTokenSupport = function(user){
+    var playload = {
+        sub: user._id,
+        nameClient: user.nameClient,
+        country: user.country,
+        code: user.clientCode,
+        role: user.role,
+        client: user.client
+    };
+    return jwt.encode(playload,secret);
+}

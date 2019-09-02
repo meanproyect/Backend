@@ -11,7 +11,7 @@ function saveSupport(req, res) {
     var params = req.body;
     var support = new Support();
 
-    if (params.password && params.name && params.surname && params.role && params.client) {
+    if (params.password && params.name && params.surname  && params.client) {
         var nameArray = params.name.split('');
         var date = new Date
         var finalCode = nameArray[0] + nameArray[1] + '-' + params.role + '-' + params.surname + date.getFullYear();

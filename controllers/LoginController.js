@@ -1,6 +1,7 @@
 'use strict';
 var AdminModel = require('../models/AdministratorModel');
 var ClientModel = require('../models/clientModel');
+var SupportModel = require('../models/supportModel');
 var bcrypt = require('bcrypt-nodejs');
 var jwt  = require('../services/jwt');
 
@@ -16,14 +17,30 @@ function login(req, res){
                         res.status(400).send({message: 'Error'});
                     }else{
                         if(!user){
-                            res.status(200).send({message: 'No se ha encontrado usuario'});
+                            SupportModel.findOne({code: params.code},(err,user)=>{
+                                if(err){
+                                    res.status(400).send({message: 'Error'});
+                                }else{
+                                    if(!user){
+                                        res.status(200).send({message: 'No se ha podido loguear'});
+                                    }else{
+                                        bcrypt.compare(params.password,user.password,(err,check)=>{
+                                            if(check){
+                                                res.status(200).send({token: jwt.createTokenSupport(user)});
+                                            }else{
+                                                res.status(200).send({message: 'No se ha podiddo loguear'})
+                                            }
+                                        })
+                                    }
+                                }
+                            })
                         }else{
                             bcrypt.compare(params.password,user.password,(err,check)=>{
                                 if(check){
                                     console.log('Client')
                                     res.status(200).send({token: jwt.createTokenClient(user)})
                                 }else{
-                                    res.status(200).send({message: 'No se encontro usuario'});
+                                    res.status(200).send({message: 'No se ha podiddo loguear'});
                                 }
                             })
                         }
