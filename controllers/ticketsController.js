@@ -2,6 +2,9 @@
 var Support = require('../models/AdministratorModel');
 var Ticket = require('../models/ticketsModel');
 var Finish = require('../models/TicketsFinishModel');
+var Client = require('../models/clientModel');
+var TicketFinished = require('../models/TicketsFinishModel');
+
 function saveTicket(req, res) {
     var params = req.body;
     var ticket = new Ticket();
@@ -30,8 +33,9 @@ function saveTicket(req, res) {
 function updateTicket(req, res) {
     var ticketId = req.params.id;
     var params = req.body;
-
-    Ticket.findByIdAndUpdate(ticketId, params,{new : true} ,(err, updateTicket) => {
+    params.title = params.title.toUpperCase();
+    params.description = params.description.toUpperCase();
+    Ticket.findByIdAndUpdate(ticketId, params,{new: true},(err, updateTicket) => {
         if (err) {
             res.status(200).send({ message: 'Error al actualizar' });
         }else{
@@ -44,7 +48,7 @@ function updateTicketConfirm(req,res){
     var ticketId = req.params.id;
     var params = req.body;
     params.status = 'CONFIRMADO';
-    Ticket.findByIdAndUpdate(ticketId, params.status,{new: true},(err, updateTicket)=>{
+    Ticket.findByIdAndUpdate(ticketId, params,{new: true},(err, updateTicket)=>{
         if(err){
             res.status(200).send({ message: 'Error al actualizar' });
         }else{
@@ -56,7 +60,7 @@ function updateTicketProcess(req,res){
     var ticketId = req.params.id;
     var params = req.body;
     params.status = 'PROCESO'
-    Ticket.findByIdAndUpdate(ticketId,params.status,{new: true},(err,updateTicket)=>{
+    Ticket.findByIdAndUpdate(ticketId,params,{new: true},(err,updateTicket)=>{
         if(err){
             res.status(200).send({ message: 'Error al actualizar' });
         }else{
@@ -70,7 +74,7 @@ function updateTicketEnd(req,res){
     var finish = new Finish();
     params.status = 'Terminado';
 
-    Ticket.findByIdAndUpdate(ticketId,params.status,{new: true},(err,updateTicket)=>{
+    Ticket.findByIdAndUpdate(ticketId,params,{new: true},(err,updateTicket)=>{
         if(err){
             res.status(200).send({ message: 'Error al actualizar' });
         }else{
@@ -116,7 +120,14 @@ function listTicket(req,res){
         if(err){
             res.status(200).send({message: 'Error al listar'});
         }else{
-            res.status(200).send({ticket: ticketStored});
+            //res.status(200).send({ticket: ticketStored});
+            Client.populate(ticketStored,{path:'client'},(err,ticketStored)=>{
+                if(err){
+                    res.status(400).send({message: 'Error al listar'});
+                }else{
+                    res.status(200).send({ticket: ticketStored});
+                }
+            })
         }
     })
 }
@@ -141,6 +152,23 @@ function TicketAsiganado(req,res){
     })
 }
 
+function ListarTicketTerminado(req, res){
+
+    TicketFinished.find({},(err,buscarTicket)=>{
+        if(err){
+            res.status(500).send({message: 'Error al buscar el ticket'});
+        }else{
+            Client.populate(buscarTicket,{path:'client'},(err,ticketStored)=>{
+                if(err){
+                    res.status(400).send({message: 'Error al listar'});
+                }else{
+                    res.status(200).send({ticket: ticketStored});
+                }
+            })
+        }
+    })
+}
+
 module.exports = {
     saveTicket,
     updateTicket,
@@ -150,5 +178,6 @@ module.exports = {
     TicketAsiganado,
     updateTicketConfirm,
     updateTicketProcess,
-    updateTicketEnd
+    updateTicketEnd,
+    ListarTicketTerminado
 }

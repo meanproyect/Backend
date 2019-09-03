@@ -9,6 +9,7 @@ exports.createToken = function (user) {
         sub: user._id,
         name: user.name,
         role: user.role,
+        code: user.code,
         iat: moment().unix(),
         exp: moment().add(30, 'day').unix
     };
@@ -19,8 +20,10 @@ exports.createTokenClient = function (user) {
         sub: user._id,
         nameClient: user.nameClient,
         country: user.country,
-        code: user.clientCode,
+        code: user.code,
         role: user.role,
+        iat: moment().unix(),
+        exp: moment().add(30, 'day').unix
     };
     return jwt.encode(playload, secret);
 }
@@ -30,9 +33,11 @@ exports.createTokenSupport = function (user) {
         sub: user._id,
         nameClient: user.nameClient,
         country: user.country,
-        code: user.clientCode,
+        code: user.code,
         role: user.role,
-        client: user.client
+        client: user.client,
+        iat: moment().unix(),
+        exp: moment().add(30, 'day').unix
     };
     return jwt.encode(playload, secret);
 }
@@ -42,7 +47,9 @@ exports.createTokenTicket = function (ticket) {
         decription: ticket.decription,
         status: ticket.status,
         startDate: ticket.startDate,
-        client: ticket.client
+        client: ticket.client,
+        iat: moment().unix(),
+        exp: moment().add(30, 'day').unix
     }
     return jwt.encode(playload,secret);
 }

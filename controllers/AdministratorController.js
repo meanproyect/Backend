@@ -10,7 +10,7 @@ function saveuser(req, res) {
     var user = new User();
     var params = req.body;
 
-    if (params.password && params.name && params.surname && params.role) {
+    if (params.password && params.name && params.surname ) {
         var nameArray = params.name.split('');
         var date = new Date
         var finalCode = nameArray[0]+nameArray[1] + '-' +'ADMINISTRATOR' +'-'+ params.surname + date.getFullYear();

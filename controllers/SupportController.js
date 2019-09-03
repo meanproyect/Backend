@@ -3,6 +3,7 @@
 
 var bcrypt = require('bcrypt-nodejs');
 var Support = require('../models/supportModel');
+var Client = require('../models/clientModel');
 //var jwt = require('../services/jwt');
 // var fs = require('fs');
 // var path = require('path');
@@ -106,7 +107,14 @@ function listSupport(req, res) {
         if (err) {
             res.status(200).send({ message: 'Error al listar los usuarios registrados' });
         } else {
-            res.status(200).send({ support: listar });
+            //res.status(200).send({ support: listar });
+            Client.populate(listar,{path: 'client'},(err,listar)=>{
+                if(err){
+                    res.status(400).send({message: 'Error al buscar Client'});
+                }else{
+                    res.status(200).send({support: listar});
+                }
+            })
         }
     });
 }
