@@ -12,13 +12,13 @@ function createClient(req, res) {
         var date = new Date();
         client.nameClient = params.nameClient.toUpperCase();
         client.country = params.country;
-        if(params.nameClient.includes(' ')){
-            var name = params.nameClient.replace(' ','');
-            client.code = name.toUpperCase() + params.country+ '-' + date.getFullYear()
-        }else{
-            client.code = client.nameClient + params.country+ '-' + date.getFullYear()
+        if (params.nameClient.includes(' ')) {
+            var name = params.nameClient.replace(' ', '');
+            client.code = name.toUpperCase() + params.country + '-' + date.getFullYear()
+        } else {
+            client.code = client.nameClient + params.country + '-' + date.getFullYear()
         }
-        
+
         client.password = params.password;
         client.role = 'CLIENT';
         client.image = null;
@@ -53,6 +53,9 @@ function updateClient(req, res) {
     var params = req.body;
     var clientId = req.params.id;
     params.nameClient = params.nameClient.toUpperCase();
+    var date = new Date();
+    var name = params.nameClient.replace(' ', '');
+    params.code = name.toUpperCase() + params.country + '-' + date.getFullYear()
     if (params.password == '') {
         res.status(200).send({ message: 'Debes de llenar el campo de contraseña' });
     } else {
@@ -71,9 +74,13 @@ function updateClient(req, res) {
     }
 }
 
-function updateDatos(req,res){
+function updateDatos(req, res) {
     var clientId = req.params.id;
     var params = req.body;
+    var date = new Date();
+    var name = params.nameClient.replace(' ', '');
+    params.code = name.toUpperCase() + params.country + '-' + date.getFullYear()
+
     Client.findByIdAndUpdate(clientId, params, { new: true }, (err, update) => {
         if (err) {
             res.status(200).send({ message: 'Error al actualizar' });
@@ -95,24 +102,24 @@ function deleteClient(req, res) {
                     res.status(400).send({message: 'Error al buscar support'});
                 }else{
                     // res.status(200).send({Support: listarSup});
-                    listarSup.forEach(support =>[
-                        Support.findByIdAndUpdate({_id: support._id},{client: idDefault},{new: true},(err,update)=>{
-                            if(err){
+                    listarSup.forEach(support => [
+                        Support.findByIdAndUpdate({ _id: support._id }, { client: idDefault }, { new: true }, (err, update) => {
+                            if (err) {
                                 console.log('Error');
-                            }else{
-                                
+                            } else {
+
                             }
                         })
                     ])
-                    Ticket.find({client: ClientId},(err,listarTicket)=>{
-                        if(err){
+                    Ticket.find({ client: ClientId }, (err, listarTicket) => {
+                        if (err) {
                             console.log(err);
-                        }else{
-                            listarTicket.forEach(ticket =>{
-                                Ticket.findByIdAndDelete(ticket._id,(err)=>{
-                                    if(err){
+                        } else {
+                            listarTicket.forEach(ticket => {
+                                Ticket.findByIdAndDelete(ticket._id, (err) => {
+                                    if (err) {
                                         console.log(err);
-                                    }else{
+                                    } else {
                                         console.log('Eliminador Ticket')
                                     }
                                 })
@@ -131,8 +138,8 @@ function deleteClient(req, res) {
         }
     })
 }
-function deleteClientDefault(req,res){
-    
+function deleteClientDefault(req, res) {
+
 }
 
 function listClients(req, res) {
