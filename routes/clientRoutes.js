@@ -8,7 +8,9 @@ api.post('/Save-Client', clientController.createClient);
 api.put('/Update-Client/:id', clientController.updateClient);
 api.put('/Update-Client-Datos/:id', clientController.updateDatos);
 api.put('/Delete-Client/:id', clientController.deleteClient);
+api.put('/Delete-Client-default/:id', clientController.deleteClientDefault);
 api.get('/List-Clients', clientController.listClients);
 api.get('/Buscar-Clients/:id', clientController.buscarClient);
+
 
 module.exports = api;

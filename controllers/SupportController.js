@@ -56,6 +56,7 @@ function updateSupport(req, res) {
     var userId = req.params.id;
     params.name = params.name.toUpperCase();
     params.surname = params.surname.toUpperCase();
+    params.role = 'SUPPORT'
     if (userId != '') {
         if (params.password == '') {
             res.status(200).send({ message: 'Debes de ingresar la contraseña obligatoriamente' });

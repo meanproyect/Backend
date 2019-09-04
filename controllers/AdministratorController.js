@@ -77,6 +77,7 @@ function updateDatos(req,res){
     var params = req.body;
     params.name = params.name.toUpperCase();
     params.surname = params.surname.toUpperCase();
+    params.role = 'ADMINISTRATOR';
     User.findByIdAndUpdate(userId, params, { new: true }, (err, update) => {
         if (err) {
             res.status(200).send({ message: 'Error al actualizar' });

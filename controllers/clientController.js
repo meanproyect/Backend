@@ -2,7 +2,8 @@
 
 var Client = require('../models/clientModel');
 var bcrypt = require('bcrypt-nodejs');
-
+var Support = require('../models/supportModel');
+var Ticket = require('../models/ticketsModel');
 function createClient(req, res) {
     var client = new Client();
     var params = req.body;
@@ -83,15 +84,55 @@ function updateDatos(req,res){
 }
 
 function deleteClient(req, res) {
-    var clientId = req.params.id;
-
-    Client.findByIdAndDelete(clientId, (err) => {
-        if (err) {
-            res.status(200).send({ message: 'Error al eliminar' });
-        } else {
-            res.status(200).send({ message: 'Se ha eliminado el Cliente' });
+    var ClientId = req.params.id;
+    var idDefault = '5d6f9a48b46ccc2984d887ca'
+    Support.populate(ClientId,{path: 'client'},(err,listar)=>{
+        if(err){
+            res.status(400).send({message: 'Error al listar Support'});
+        }else{
+            Support.find({client: listar},(err,listarSup)=>{
+                if(err){
+                    res.status(400).send({message: 'Error al buscar support'});
+                }else{
+                    // res.status(200).send({Support: listarSup});
+                    listarSup.forEach(support =>[
+                        Support.findByIdAndUpdate({_id: support._id},{client: idDefault},{new: true},(err,update)=>{
+                            if(err){
+                                console.log('Error');
+                            }else{
+                                
+                            }
+                        })
+                    ])
+                    Ticket.find({client: ClientId},(err,listarTicket)=>{
+                        if(err){
+                            console.log(err);
+                        }else{
+                            listarTicket.forEach(ticket =>{
+                                Ticket.findByIdAndDelete(ticket._id,(err)=>{
+                                    if(err){
+                                        console.log(err);
+                                    }else{
+                                        console.log('Eliminador Ticket')
+                                    }
+                                })
+                            })
+                            Client.findByIdAndDelete(ClientId, (err) => {
+                                if (err) {
+                                    res.status(200).send({ message: 'Error al eliminar' });
+                                } else {
+                                    res.status(200).send({ message: 'Se ha eliminado el Cliente' });
+                                }
+                            });
+                        }
+                    })
+                }
+            })
         }
-    });
+    })
+}
+function deleteClientDefault(req,res){
+    
 }
 
 function listClients(req, res) {
@@ -121,6 +162,7 @@ module.exports = {
     updateDatos,
     deleteClient,
     listClients,
-    buscarClient
+    buscarClient,
+    deleteClientDefault
 }
 
