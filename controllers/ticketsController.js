@@ -12,7 +12,7 @@ function saveTicket(req, res) {
     if (params.title && params.description ) {
         ticket.title = params.title.toUpperCase();
         ticket.description = params.description.toUpperCase();
-        ticket.status = 'ESPERA';
+        ticket.status = 'PROCESO';
         ticket.startDate = Date.now();
         ticket.client = params.client;
 
@@ -60,6 +60,30 @@ function updateTicketProcess(req,res){
     var ticketId = req.params.id;
     var params = req.body;
     params.status = 'PROCESO'
+    Ticket.findByIdAndUpdate(ticketId,params,{new: true},(err,updateTicket)=>{
+        if(err){
+            res.status(200).send({ message: 'Error al actualizar' });
+        }else{
+            res.status(200).send({ update: updateTicket });
+        }
+    })
+}
+function updateTicketWait(req,res){
+    var ticketId = req.params.id;
+    var params = req.body;
+    params.status = 'ESPERA'
+    Ticket.findByIdAndUpdate(ticketId,params,{new: true},(err,updateTicket)=>{
+        if(err){
+            res.status(200).send({ message: 'Error al actualizar' });
+        }else{
+            res.status(200).send({ update: updateTicket });
+        }
+    })
+}
+function updateTicketofClient(req,res){
+    var ticketId = req.params.id;
+    var params = req.body;
+    params.status = 'CONFIRMAR POR CLIENTE'
     Ticket.findByIdAndUpdate(ticketId,params,{new: true},(err,updateTicket)=>{
         if(err){
             res.status(200).send({ message: 'Error al actualizar' });
@@ -120,7 +144,6 @@ function listTicket(req,res){
         if(err){
             res.status(200).send({message: 'Error al listar'});
         }else{
-            //res.status(200).send({ticket: ticketStored});
             Client.populate(ticketStored,{path:'client'},(err,ticketStored)=>{
                 if(err){
                     res.status(400).send({message: 'Error al listar'});
@@ -178,6 +201,8 @@ module.exports = {
     TicketAsiganado,
     updateTicketConfirm,
     updateTicketProcess,
+    updateTicketWait,
+    updateTicketofClient,
     updateTicketEnd,
     ListarTicketTerminado
 }

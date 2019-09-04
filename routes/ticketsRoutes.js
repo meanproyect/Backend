@@ -7,6 +7,8 @@ api.post('/Save-Ticket', ticketController.saveTicket);
 api.put('/Update-Ticket/:id', ticketController.updateTicket);
 api.put('/Update-Confim/:id', ticketController.updateTicketConfirm);
 api.put('/Update-Process/:id', ticketController.updateTicketProcess);
+api.put('/Update-Wait/:id', ticketController.updateTicketWait);
+api.put('/Update-ConfirmClient/:id', ticketController.updateTicketofClient);
 api.put('/Update-finish/:id',ticketController.updateTicketEnd);
 api.put('/Delete-ticket/:id', ticketController.deleteTicket);
 api.get('/List-Tickets', ticketController.listTicket);
