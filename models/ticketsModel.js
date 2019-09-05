@@ -2,13 +2,13 @@
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-
-var SchemaTicket = Schema({
+var SchemaTicket =  Schema({
     title: String,
     description: String,
     status: String,
     startDate: Date,
     finalDate: Date,
+    image: String,
     client: {type: Schema.ObjectId, ref:'Client'}
 });
 

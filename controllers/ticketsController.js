@@ -4,6 +4,25 @@ var Ticket = require('../models/ticketsModel');
 var Finish = require('../models/TicketsFinishModel');
 var Client = require('../models/clientModel');
 var TicketFinished = require('../models/TicketsFinishModel');
+const bodyParser = require('body-parser');
+const multipart = require('connect-multiparty');
+const multer = require('multer');
+
+//para asignarle un directorio donde se guardara la imagen 
+
+const multitPartMiddleware = multipart({
+    uploadDir: './subidas'
+});
+var storage = multer.diskStorage({
+    destination: function(req,file,cb){
+        cb(null,'./uploads/Tickets');
+    },
+    filename: function(req,file,cb){
+        cb(null, req.params.id + path.extname(file.originalname))
+    }
+});
+
+var upload = multer({storage: storage})
 
 function saveTicket(req, res) {
     var params = req.body;
@@ -15,7 +34,7 @@ function saveTicket(req, res) {
         ticket.status = 'PROCESO';
         ticket.startDate = Date.now();
         ticket.client = params.client;
-
+        ticket.image_Ticket = params.image_Ticket;
         ticket.save((err, saveTicket) => {
             if (err) {
                 res.status(200).send({ message: 'Error al guardar ticket' });
@@ -29,7 +48,24 @@ function saveTicket(req, res) {
         res.status(200).send({ message: 'Debes de ingresar todo los campos' });
     }
 }
-
+function setImage(req,res){
+    if(req.file){
+        Ticket.findByIdAndUpdate(req.params.id,{image: req.file.path},(err, resp)=>{
+            if(err){
+                deleteFile(res, req.file.path, 'No se ha podido actualizar', true);
+                res.status(200).send({message: 'No se pudo actualizar'});
+            }else{
+                if(!resp){
+                    res.status(200).send({message: 'NO se actualizado la imagen'});
+                }else{
+                    res.status(200).send({message: 'Archivo subido con extio'})
+                }
+            }
+        })
+    }else{
+        res.status(200).send({message: 'No se adjunto imafen'});
+    }
+}
 function updateTicket(req, res) {
     var ticketId = req.params.id;
     var params = req.body;
@@ -204,5 +240,6 @@ module.exports = {
     updateTicketWait,
     updateTicketofClient,
     updateTicketEnd,
-    ListarTicketTerminado
+    ListarTicketTerminado,
+    setImage
 }
