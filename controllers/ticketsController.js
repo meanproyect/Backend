@@ -62,8 +62,10 @@ function getImage(req,res){
         }else{
             if(prd){
                 if(prd.image){
-                    res.status(200).sendFile(path.resolve('./'+ prd.image));
+                 res.status(200).sendFile(path.resolve('./'+ prd.image));
+                    
                 }else{
+                    
                     res.status(200).sendFile(path.resolve('./uploads/Tickets/noimage.png'))
                 }
             }
