@@ -234,6 +234,70 @@ function ListarTicketTerminado(req, res){
     })
 }
 
+function ListarTicketProceso(req, res){
+    Ticket.find({status: 'PROCESO'}, (err, buscarTicket) =>{
+        if(err){
+            res.status(200).send({message: 'Error al buscar'});
+        }else{
+            Client.populate(buscarTicket, {path:'client'}, (err, ticketStored)=>{
+                if(err){
+                    res.status(400).send({message: 'Error al listar'});
+                }else{
+                    res.status(200).send({ticket: ticketStored});
+                }
+            });
+        }
+    });
+}
+
+function ListarTicketEspera(req, res){
+    Ticket.find({status: 'ESPERA'}, (err, buscarTicket) =>{
+        if(err){
+            res.status(200).send({message: 'Error al buscar'});
+        }else{
+            Client.populate(buscarTicket, {path:'client'}, (err, ticketStored)=>{
+                if(err){
+                    res.status(400).send({message: 'Error al listar'});
+                }else{
+                    res.status(200).send({ticket: ticketStored});
+                }
+            });
+        }
+    });
+}
+
+function ListarTicketConfirmarCliente(req, res){
+    Ticket.find({status: 'CONFIRMAR POR CLIENTE'}, (err, buscarTicket) =>{
+        if(err){
+            res.status(200).send({message: 'Error al buscar'});
+        }else{
+            Client.populate(buscarTicket, {path:'client'}, (err, ticketStored)=>{
+                if(err){
+                    res.status(400).send({message: 'Error al listar'});
+                }else{
+                    res.status(200).send({ticket: ticketStored});
+                }
+            });
+        }
+    });
+}
+
+function ListarTicketConfirmado(req, res){
+    Ticket.find({status: 'CONFIRMADO'}, (err, buscarTicket) =>{
+        if(err){
+            res.status(200).send({message: 'Error al buscar'});
+        }else{
+            Client.populate(buscarTicket, {path:'client'}, (err, ticketStored)=>{
+                if(err){
+                    res.status(400).send({message: 'Error al listar'});
+                }else{
+                    res.status(200).send({ticket: ticketStored});
+                }
+            });
+        }
+    });
+}
+
 module.exports = {
     saveTicket,
     updateTicket,
@@ -248,5 +312,9 @@ module.exports = {
     updateTicketEnd,
     ListarTicketTerminado,
     setImage,
-    getImage
+    getImage,
+    ListarTicketProceso,
+    ListarTicketEspera,
+    ListarTicketConfirmarCliente,
+    ListarTicketConfirmado
 }

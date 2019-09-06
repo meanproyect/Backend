@@ -30,5 +30,9 @@ api.get('/List-Tickets', ticketController.listTicket);
 api.get('/Buscar-Ticket/:id', ticketController.buscarTicket);
 api.post('/Assigned-Ticket', ticketController.TicketAsiganado);
 api.get('/Listar-Tickets-Terminados', ticketController.ListarTicketTerminado);
+api.get('/Listar-Ticket-Proceso', ticketController.ListarTicketProceso);
+api.get('/Listar-Ticket-Espera', ticketController.ListarTicketEspera);
+api.get('/Listar-Ticket-ConfirmarCliente', ticketController.ListarTicketConfirmarCliente);
+api.get('/Listar-Ticket-Confirmado', ticketController.ListarTicketConfirmado);
 
 module.exports = api;
