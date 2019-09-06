@@ -8,6 +8,8 @@ const bodyParser = require('body-parser');
 const multipart = require('connect-multiparty');
 const multer = require('multer');
 var path = require('path');
+const officegen = require('officegen')
+const fs = require('fs')
 //para asignarle un directorio donde se guardara la imagen 
 
 
@@ -56,6 +58,8 @@ function setImage(req,res){
 }
 
 function getImage(req,res){
+    let docx =require('officegen');
+    let fs = require('fs')
     Ticket.findOne({_id: req.params.id},(err, prd)=>{
         if(err){
             res.status(200).send({message: 'Error al buscar la imagen'});
@@ -63,7 +67,7 @@ function getImage(req,res){
             if(prd){
                 if(prd.image){
                  res.status(200).sendFile(path.resolve('./'+ prd.image));
-                    
+                //  res.status(200).sendFile(docx.generate('/'+prd.image));
                 }else{
                     
                     res.status(200).sendFile(path.resolve('./uploads/Tickets/noimage.png'))
