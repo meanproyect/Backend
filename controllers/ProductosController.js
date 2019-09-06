@@ -1,7 +1,7 @@
 'use strict';
 
 var Product = require('../models/ProductoModel');
-var bcrypt = require('bcrypt-node');
+
 
 
 function saveProduct(req,res){

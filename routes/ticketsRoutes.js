@@ -3,6 +3,7 @@ var express = require('express');
 var ticketController = require('../controllers/ticketsController');
 var api = express.Router();
 const multer = require('multer');
+var path = require('path');
 var storage = multer.diskStorage({
     destination: function(req,file,cb){
         cb(null,'./uploads/Tickets');
@@ -17,6 +18,7 @@ var upload = multer({storage: storage})
 
 api.post('/Save-Ticket', ticketController.saveTicket);
 api.post('/uploadPhoto/:id/upload',upload.single('photo'), ticketController.setImage);
+api.get('/getPhoto/:id',ticketController.getImage);
 api.put('/Update-Ticket/:id', ticketController.updateTicket);
 api.put('/Update-Confim/:id', ticketController.updateTicketConfirm);
 api.put('/Update-Process/:id', ticketController.updateTicketProcess);

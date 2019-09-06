@@ -7,22 +7,10 @@ var TicketFinished = require('../models/TicketsFinishModel');
 const bodyParser = require('body-parser');
 const multipart = require('connect-multiparty');
 const multer = require('multer');
-
+var path = require('path');
 //para asignarle un directorio donde se guardara la imagen 
 
-const multitPartMiddleware = multipart({
-    uploadDir: './subidas'
-});
-var storage = multer.diskStorage({
-    destination: function(req,file,cb){
-        cb(null,'./uploads/Tickets');
-    },
-    filename: function(req,file,cb){
-        cb(null, req.params.id + path.extname(file.originalname))
-    }
-});
 
-var upload = multer({storage: storage})
 
 function saveTicket(req, res) {
     var params = req.body;
@@ -65,6 +53,22 @@ function setImage(req,res){
     }else{
         res.status(200).send({message: 'No se adjunto imafen'});
     }
+}
+
+function getImage(req,res){
+    Ticket.findOne({_id: req.params.id},(err, prd)=>{
+        if(err){
+            res.status(200).send({message: 'Error al buscar la imagen'});
+        }else{
+            if(prd){
+                if(prd.image){
+                    res.status(200).sendFile(path.resolve('./'+ prd.image));
+                }else{
+                    res.status(200).sendFile(path.resolve('./uploads/Tickets/noimage.png'))
+                }
+            }
+        }
+    })
 }
 function updateTicket(req, res) {
     var ticketId = req.params.id;
@@ -241,5 +245,6 @@ module.exports = {
     updateTicketofClient,
     updateTicketEnd,
     ListarTicketTerminado,
-    setImage
+    setImage,
+    getImage
 }

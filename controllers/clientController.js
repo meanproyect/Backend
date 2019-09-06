@@ -92,7 +92,7 @@ function updateDatos(req, res) {
 
 function deleteClient(req, res) {
     var ClientId = req.params.id;
-    var idDefault = '5d6fd1b161859e168c27fb3f'
+    var idDefault = '5d6f9a48b46ccc2984d887ca'
     Support.populate(ClientId,{path: 'client'},(err,listar)=>{
         if(err){
             res.status(400).send({message: 'Error al listar Support'});
